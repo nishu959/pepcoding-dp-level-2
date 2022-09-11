@@ -1,0 +1,51 @@
+import sys
+from collections import deque
+class pair:
+    def __init__(self, idx , jmp , res, psf):
+        self.idx = idx
+        self.jmp = jmp
+        self.res = res
+        self.psf = psf
+
+n = int(input())
+nums=[]
+for i in range(n):
+    nums.append(int(input()))
+    
+dp = [None]*(n)
+dp[n-1]=0
+
+for i in range(n-2, -1, -1):
+    jumps = nums[i]
+    mn = sys.maxsize
+    for j in range(1, jumps+ 1):
+        if i+j<n and dp[i+j]!=None:
+            mn = min(mn , dp[i+j])
+    if mn != sys.maxsize:
+        dp[i]= mn + 1
+    
+print(dp[0])
+deq = deque([])
+deq.append(pair(0 , nums[0], dp[0], "0"))
+
+while len(deq)!=0:
+    p= deq.popleft()
+    # print(p.idx)
+    if p.res==0:
+        print(p.psf + " .")
+    for j in range(1, p.jmp+1):
+        ci = p.idx +j
+        # print(dp[ci], ci)
+        if ci<n and dp[ci]!=None and dp[ci]==p.res-1:
+            deq.append(pair(ci,nums[ci],dp[ci], p.psf+" -> "+str(ci)))
+            
+            
+    
+            
+            
+            
+            
+            
+            
+            
+            
